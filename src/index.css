@@ -32,3 +32,30 @@
     margin: 25px 0;
   }
 }
+
+.panel {
+  /*  makes border orange and 1 pixel width */
+  border: 1px solid #f4511e;
+  /* makes border's edge sharp */
+  border-radius: 0;
+  /* smooth shadow appear */
+  transition: box-shadow 0.5s;
+}
+
+.panel:hover {
+  /* makes pretty shadow with
+     horizontal offset 5 pexels,
+     vertical offset 0 pixels
+     blur radius 40 pixels*/
+  box-shadow: 5px 0px 40px rgba(0, 0, 0, 0.2);
+}
+
+.panel-footer .btn:hover {
+  /*  makes border orange and 1 pixel width */
+  border: 1px solid #f4511e;
+  /* !important specify given option for node,
+     despite of high order classes properties
+  */
+  background-color: #fff !important;
+  color: #f4511e;
+}
