@@ -59,3 +59,48 @@
   background-color: #fff !important;
   color: #f4511e;
 }
+
+.panel-heading {
+
+  /* specify white text for panel-heading, despite of
+     body's text color is black */
+  color: #fff !important;
+  /* specify f4511e color for panel-heading background */
+  background-color: #f4511e !important;
+  /* generates space around an panel-heading's content */
+  padding: 25px;
+  border-bottom: 1px solid transparent;
+  /* set top left corner of panel-heading sharp */
+  border-top-left-radius: 0px;
+  /* set top right corner of panel-heading sharp */
+  border-top-right-radius: 0px;
+  /* set bottom left corner of panel-heading sharp */
+  border-bottom-left-radius: 0px;
+  /* set bottom right corner of panel-heading sharp */
+  border-bottom-right-radius: 0px;
+}
+
+.panel-body p {
+  font-size: 18px;
+}
+
+.panel-footer {
+  background-color: #fff !important;
+}
+
+.panel-footer h3 {
+  font-size: 32px;
+}
+
+.panel-footer h4 {
+  color: #aaa;
+  font-size: 14px;
+}
+
+.panel-footer .btn {
+  /* set top and bottom marging as 15 pixels, and
+     left and right as 0 pixels */
+  margin: 15px 0;
+  background-color: #f4511e;
+  color: #fff;
+}
