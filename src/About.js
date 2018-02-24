@@ -15,7 +15,7 @@ class About extends Component {
             <Col sm={8}>
               <h2>About our company</h2>
               <h4>
-                <strong>Pay and Spray</strong> small youn and promising
+                <strong>Pay and Spray</strong> small, young and promising
                 company, which was created by two enthusiasts
                </h4>
               <p>
@@ -24,7 +24,7 @@ class About extends Component {
                 When vehicle's body was prepared to paint, we deliver it to
                 spray booth, there we spray vehicle's body. After it was
                 painted, it will delivered to separate paint drying chamber.
-                There dust free air flow, heated to 60&8451;, dries paint. When
+                There dust free air flow, heated to 60{'\u2103'}, dries paint. When
                 paint dried up, vecile get back to preparatory chamber for
                 polishing and finish works.
               </p>
