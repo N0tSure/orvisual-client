@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import About from './About';
+import MainPage from './MainPage';
 
-it('About renders without crashing', () => {
+it('MainPage renders without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<About />, div);
+  ReactDOM.render(<MainPage />, div);
   ReactDOM.unmountComponentAtNode(div);
 });
