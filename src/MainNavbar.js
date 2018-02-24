@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
+import './MainNavbar.css';
 
 class MainNavbar extends Component {
   render() {
@@ -7,7 +8,7 @@ class MainNavbar extends Component {
       <Navbar fixedTop>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#">Logo</a>
+            <a href="#main">Logo</a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>

@@ -1,0 +1,29 @@
+.navbar {
+  margin-bottom: 0;
+  background-color: #f4511e;
+  /* makes navbar render on top of other elements */
+  z-index: 9999;
+  border: 0;
+  font-size: 12px !important;
+  /* makes lines of text height appropriate */
+  line-height: 1.42857143 !important;
+  /* makes space between letters 4 pixels */
+  letter-spacing: 4px;
+  border-radius: 0;
+}
+
+/* makes navbar items and brand text white by default */
+.navbar li a, .navbar .navbar-brand {
+  color: #fff !important;
+}
+
+/* makes navbar items white on mouse on, and text orange */
+.navbar-nav li a:hover, .navbar-nav li.active a {
+  color: #f4511e !important;
+  background-color: #fff !important;
+}
+
+.navbar-default .navbar-toggle {
+  border-color: transparent;
+  color: #fff !important;
+}
