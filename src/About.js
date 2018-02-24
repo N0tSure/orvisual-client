@@ -30,7 +30,7 @@ class About extends Component {
               </p>
             </Col>
             <Col sm={4}>
-              <Glyphicon glyph="ok" />
+              <Glyphicon glyph="ok" className="logo"/>
             </Col>
           </Row>
         </Grid>
