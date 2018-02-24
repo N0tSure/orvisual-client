@@ -8,3 +8,19 @@
 .container-fluid {
   padding: 60px 50px;
 }
+
+.glyphicon-ok {
+  color: #f4511e;
+  font-size: 200px;
+}
+
+/*
+  media queries to center logo column on
+  screens smaller than 768 pixel wide
+  */
+@media screen and (max-width: 768px) {
+  .col-sm-4 {
+    text-align: center;
+    margin: 25px 0;
+  }
+}

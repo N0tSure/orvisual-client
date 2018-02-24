@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Jumbotron } from 'react-bootstrap';
+import { Jumbotron, Grid, Row, Col, Glyphicon } from 'react-bootstrap';
 import './About.css';
 
 class About extends Component {
@@ -10,7 +10,30 @@ class About extends Component {
           <h1>Pay and Spray</h1>
           <p>We specialize on vehicle body paintwork</p>
         </Jumbotron>
-        <div id="about" class="container-fluid"></div>
+        <Grid fluid id="about">
+          <Row>
+            <Col sm={8}>
+              <h2>About our company</h2>
+              <h4>
+                <strong>Pay and Spray</strong> small youn and promising
+                company, which was created by two enthusiasts
+               </h4>
+              <p>
+                In our vehicle painting workshop, we have separate preparatory
+                chamber, which we use to prepare vehicle body to painting.
+                When vehicle's body was prepared to paint, we deliver it to
+                spray booth, there we spray vehicle's body. After it was
+                painted, it will delivered to separate paint drying chamber.
+                There dust free air flow, heated to 60&8451;, dries paint. When
+                paint dried up, vecile get back to preparatory chamber for
+                polishing and finish works.
+              </p>
+            </Col>
+            <Col sm={4}>
+              <Glyphicon glyph="ok" />
+            </Col>
+          </Row>
+        </Grid>
       </React.Fragment>
     );
   }
