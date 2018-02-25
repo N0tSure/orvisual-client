@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import MainNavbar from './MainNavbar';
-import About from './About';
-import Services from './Services';
-import Pricing from './Pricing';
+import MainNavbar from './fragments/MainNavbar';
+import About from './fragments/About';
+import Services from './fragments/Services';
+import Pricing from './fragments/Pricing';
 
 class MainPage extends Component {
   render() {
