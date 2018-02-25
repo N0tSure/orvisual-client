@@ -8,7 +8,7 @@ class MainNavbar extends Component {
       <Navbar fixedTop>
         <Navbar.Header>
           <Navbar.Brand>
-            <a href="#main">Logo</a>
+            <a href="#root">Logo</a>
           </Navbar.Brand>
           <Navbar.Toggle />
         </Navbar.Header>
