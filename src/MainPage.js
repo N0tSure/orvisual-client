@@ -3,6 +3,7 @@ import MainNavbar from './fragments/MainNavbar';
 import About from './fragments/About';
 import Services from './fragments/Services';
 import Pricing from './fragments/Pricing';
+import Contacts from './fragments/Contacts';
 
 class MainPage extends Component {
   render() {
@@ -12,6 +13,7 @@ class MainPage extends Component {
         <About />
         <Services />
         <Pricing />
+        <Contacts />
       </React.Fragment>
     );
   }
