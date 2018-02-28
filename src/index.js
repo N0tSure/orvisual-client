@@ -1,8 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import registerServiceWorker from './registerServiceWorker';
-import MainPage from './MainPage.js';
+import Home from './Home';
+import OrderEntry from './OrderEntry';
 
-ReactDOM.render(<MainPage />, document.getElementById('root'));
+const App = () => {
+  return(
+    <BrowserRouter>
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route path='/order' component={OrderEntry} />
+      </Switch>
+    </BrowserRouter>
+  );
+}
+
+ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
