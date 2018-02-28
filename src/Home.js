@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import MainNavbar from './fragments/MainNavbar';
+import HomeNavbar from './fragments/HomeNavbar';
 import About from './fragments/About';
 import Services from './fragments/Services';
 import Pricing from './fragments/Pricing';
 import Contacts from './fragments/Contacts';
 
-class MainPage extends Component {
+class Home extends Component {
   render() {
     return(
       <React.Fragment>
-        <MainNavbar />
+        <HomeNavbar />
         <About />
         <Services />
         <Pricing />
@@ -19,4 +19,4 @@ class MainPage extends Component {
   }
 }
 
-export default MainPage;
+export default Home;

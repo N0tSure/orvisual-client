@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem } from 'react-bootstrap';
-import './MainNavbar.css';
+import './HomeNavbar.css';
 
-class MainNavbar extends Component {
+class HomeNavbar extends Component {
   render() {
     return (
       <Navbar fixedTop>
@@ -33,4 +33,4 @@ class MainNavbar extends Component {
   }
 }
 
-export default MainNavbar;
+export default HomeNavbar;
