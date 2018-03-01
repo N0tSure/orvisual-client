@@ -4,14 +4,14 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 import registerServiceWorker from './registerServiceWorker';
 import Home from './Home';
-import OrderEntry from './OrderEntry';
+import Order from './Order';
 
 const App = () => {
   return(
     <BrowserRouter>
       <Switch>
         <Route exact path='/' component={Home} />
-        <Route path='/order' component={OrderEntry} />
+        <Route path='/order' component={Order} />
       </Switch>
     </BrowserRouter>
   );
