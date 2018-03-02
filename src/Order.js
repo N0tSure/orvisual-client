@@ -7,7 +7,8 @@ import {
 } from 'react-bootstrap';
 
 const defaultErrorState = {
-  'client-name': 'Name must 2 character minimum'
+  'client-name': 'Name must 2 character minimum',
+  'client-phone': 'Invalid phone number'
 };
 
 class Order extends React.Component {
@@ -16,7 +17,8 @@ class Order extends React.Component {
     this.state = {
       errors: defaultErrorState,
       order: {
-        client: ''
+        client: '',
+        phone: ''
       },
       files: []
     };
@@ -34,6 +36,13 @@ class Order extends React.Component {
     this.setState({order: order, errors: errors});
   }
 
+  handlePhoneInputChange = (e) => {
+    let order = this.state.order;
+    order['phone'] = e.target.value;
+    let errors = this.validateCurrentState(order);
+    this.setState({order: order, errors: errors});
+  }
+
   isValidPropertyByPattern(propName, pattern, target) {
     return target.hasOwnProperty(propName) && target[propName].match(pattern);
   }
@@ -42,7 +51,11 @@ class Order extends React.Component {
     let errors = {};
 
     if (!this.isValidPropertyByPattern('client', /\w{2,}/, order)) {
-      errors['client-name'] = 'Name must 2 character minimum';
+      errors['client-name'] = defaultErrorState['client-name'];
+    }
+
+    if(!this.isValidPropertyByPattern('phone', /\+?\d{4,}/, order)) {
+      errors['client-phone'] = defaultErrorState['client-phone'];
     }
 
     return errors;
@@ -78,15 +91,21 @@ class Order extends React.Component {
                   <FormControl.Feedback />
                   <HelpBlock>{this.findErrors('client-name')}</HelpBlock>
               </FormGroup>
-              <FormGroup controlId="phone">
+              <FormGroup controlId="phone"
+                validationState={this.findErrors('client-phone') ? 'warning' : 'success'}>
                 <ControlLabel>Phone number</ControlLabel>
                 <InputGroup>
                   <InputGroup.Addon>
                     <Glyphicon glyph="phone" />
                   </InputGroup.Addon>
-                  <FormControl type="text" placeholder="Enter your phone number" />
-                  <FormControl.Feedback />
+                  <FormControl
+                    type="text"
+                    value={this.state.order.phone}
+                    onChange={this.handlePhoneInputChange}
+                    placeholder="Enter your phone number" />
                 </InputGroup>
+                <FormControl.Feedback />
+                <HelpBlock>{this.findErrors('client-phone')}</HelpBlock>
               </FormGroup>
               <FormGroup controlId="email" validationState="success">
                 <ControlLabel>Email address</ControlLabel>
@@ -106,7 +125,7 @@ class Order extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col sm={8} smOffset={2} mdPush={7}>
+          <Col sm={8} smOffset={2} smPush={7}>
             <Button disabled={this.hasErrors()} bsSize="large" onClick={this.handleOrderSubmission}>
               Submit
             </Button>
