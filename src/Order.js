@@ -161,9 +161,13 @@ class Order extends React.Component {
 
 const PicturesPan = (props) => {
   let images = [];
+  let rowCount = Math.ceil(props.images / 3);
+  let rows = [];
+
   for (let image of props.images) {
     images.push(<Image key={image.name} src={window.URL.createObjectURL(image)} responsive />);
   }
+
   return(<Row>{images}</Row>);
 }
 
