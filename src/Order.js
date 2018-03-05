@@ -3,7 +3,8 @@ import {
   Grid, Row, Col, Glyphicon,
   Form, HelpBlock,
   FormGroup, ControlLabel, FormControl, InputGroup,
-  Button, ButtonToolbar
+  Button, ButtonToolbar,
+  Image
 } from 'react-bootstrap';
 
 const defaultErrorState = {
@@ -152,9 +153,18 @@ class Order extends React.Component {
             </ButtonToolbar>
           </Col>
         </Row>
+        <PicturesPan images={this.state.files} />
       </Grid>
     );
   }
+}
+
+const PicturesPan = (props) => {
+  let images = [];
+  for (let image of props.images) {
+    images.push(<Image key={image.name} src={window.URL.createObjectURL(image)} responsive />);
+  }
+  return(<Row>{images}</Row>);
 }
 
 export default Order;
