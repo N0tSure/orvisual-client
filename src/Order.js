@@ -3,7 +3,7 @@ import {
   Grid, Row, Col, Glyphicon,
   Form, HelpBlock,
   FormGroup, ControlLabel, FormControl, InputGroup,
-  Button
+  Button, ButtonToolbar
 } from 'react-bootstrap';
 
 const defaultErrorState = {
@@ -27,36 +27,21 @@ class Order extends React.Component {
   }
 
   handleOrderSubmission = () => {
-    console.log(JSON.stringify(this.state.order));
+    console.log('Order', JSON.stringify(this.state.order));
+    console.log('Files', this.state.files.toString());
   }
 
-
-  handleNameInputChange = (e) => {
+  handleInputChange = (event, prop) => {
     let order = this.state.order;
-    order['client'] = e.target.value;
+    order[prop] = event.target.value;
     let errors = this.validateCurrentState(order);
     this.setState({order: order, errors: errors});
   }
 
-  handlePhoneInputChange = (e) => {
-    let order = this.state.order;
-    order['phone'] = e.target.value;
-    let errors = this.validateCurrentState(order);
-    this.setState({order: order, errors: errors});
-  }
-
-  handleEmailInputChange = (e) => {
-    let order = this.state.order;
-    order['email'] = e.target.value;
-    let errors = this.validateCurrentState(order);
-    this.setState({order: order, errors: errors});
-  }
-
-  handleDescriptionInputChange = (e) => {
-    let order = this.state.order;
-    order['description'] = e.target.value;
-    let errors = this.validateCurrentState(order);
-    this.setState({order: order, errors: errors});
+  handleFileInput = (e) => {
+    let files = [];
+    files.push.apply(files, e.target.files);
+    this.setState({files: files});
   }
 
   isValidPropertyByPattern(propName, pattern, target) {
@@ -106,7 +91,7 @@ class Order extends React.Component {
                   <FormControl
                    type="text"
                    value={this.state.order.client}
-                   onChange={this.handleNameInputChange}
+                   onChange={(e) => { this.handleInputChange(e, 'client')}}
                    placeholder="Enter your name" />
                   <FormControl.Feedback />
                   <HelpBlock>{this.findErrors('client-name')}</HelpBlock>
@@ -121,7 +106,7 @@ class Order extends React.Component {
                   <FormControl
                     type="text"
                     value={this.state.order.phone}
-                    onChange={this.handlePhoneInputChange}
+                    onChange={(e) => { this.handleInputChange(e, 'phone')}}
                     placeholder="Enter your phone number" />
                 </InputGroup>
                 <FormControl.Feedback />
@@ -137,7 +122,7 @@ class Order extends React.Component {
                   <FormControl
                     type="text"
                     value={this.state.order.email}
-                    onChange={this.handleEmailInputChange}
+                    onChange={(e) => { this.handleInputChange(e, 'email')}}
                     placeholder="Enter your email address" />
                 </InputGroup>
                 <FormControl.Feedback />
@@ -146,18 +131,25 @@ class Order extends React.Component {
               <FormGroup controlId="description">
                 <ControlLabel>Order description</ControlLabel>
                 <FormControl
+                  placeholder="Enter additional order details"
                   value={this.state.order.description}
-                  onChange={this.handleDescriptionInputChange}
+                  onChange={(e) => { this.handleInputChange(e, 'description')}}
                   componentClass="textarea" />
+              </FormGroup>
+              <FormGroup controlId="pictures" bsClass="hidden">
+                <FormControl type="file" multiple onChange={this.handleFileInput} />
               </FormGroup>
             </Form>
           </Col>
         </Row>
         <Row>
-          <Col sm={8} smOffset={2} smPush={7}>
-            <Button disabled={this.hasErrors()} bsSize="large" onClick={this.handleOrderSubmission}>
-              Submit
-            </Button>
+          <Col sm={8} smOffset={2} smPush={6}>
+            <ButtonToolbar>
+              <Button componentClass="label" htmlFor="pictures">Add picture</Button>
+              <Button disabled={this.hasErrors()} onClick={this.handleOrderSubmission}>
+                Submit
+              </Button>
+            </ButtonToolbar>
           </Col>
         </Row>
       </Grid>
