@@ -8,7 +8,8 @@ import {
 
 const defaultErrorState = {
   'client-name': 'Name must 2 character minimum',
-  'client-phone': 'Invalid phone number'
+  'client-phone': 'Invalid phone number',
+  'client-email': 'Invalid email address'
 };
 
 class Order extends React.Component {
@@ -18,7 +19,8 @@ class Order extends React.Component {
       errors: defaultErrorState,
       order: {
         client: '',
-        phone: ''
+        phone: '',
+        email: ''
       },
       files: []
     };
@@ -43,6 +45,13 @@ class Order extends React.Component {
     this.setState({order: order, errors: errors});
   }
 
+  handleEmailInputChange = (e) => {
+    let order = this.state.order;
+    order['email'] = e.target.value;
+    let errors = this.validateCurrentState(order);
+    this.setState({order: order, errors: errors});
+  }
+
   isValidPropertyByPattern(propName, pattern, target) {
     return target.hasOwnProperty(propName) && target[propName].match(pattern);
   }
@@ -56,6 +65,10 @@ class Order extends React.Component {
 
     if(!this.isValidPropertyByPattern('phone', /\+?\d{4,}/, order)) {
       errors['client-phone'] = defaultErrorState['client-phone'];
+    }
+
+    if(!this.isValidPropertyByPattern('email', /(\w+@\w{1,})(.*)?/, order)) {
+      errors['client-email'] = defaultErrorState['client-email'];
     }
 
     return errors;
@@ -107,15 +120,21 @@ class Order extends React.Component {
                 <FormControl.Feedback />
                 <HelpBlock>{this.findErrors('client-phone')}</HelpBlock>
               </FormGroup>
-              <FormGroup controlId="email" validationState="success">
+              <FormGroup controlId="email"
+                validationState={this.findErrors('client-email') ? 'warning' : 'success'}>
                 <ControlLabel>Email address</ControlLabel>
                 <InputGroup>
                   <InputGroup.Addon>
                     <Glyphicon glyph="envelope" />
                   </InputGroup.Addon>
-                  <FormControl type="text" placeholder="Enter your email address" />
-                  <FormControl.Feedback />
+                  <FormControl
+                    type="text"
+                    value={this.state.order.email}
+                    onChange={this.handleEmailInputChange}
+                    placeholder="Enter your email address" />
                 </InputGroup>
+                <FormControl.Feedback />
+                <HelpBlock>{this.findErrors('client-email')}</HelpBlock>
               </FormGroup>
               <FormGroup controlId="description">
                 <ControlLabel>Order description</ControlLabel>
