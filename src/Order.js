@@ -27,7 +27,7 @@ class Order extends React.Component {
   }
 
   handleOrderSubmission = () => {
-    console.log('click');
+    console.log(JSON.stringify(this.state.order));
   }
 
 
@@ -48,6 +48,13 @@ class Order extends React.Component {
   handleEmailInputChange = (e) => {
     let order = this.state.order;
     order['email'] = e.target.value;
+    let errors = this.validateCurrentState(order);
+    this.setState({order: order, errors: errors});
+  }
+
+  handleDescriptionInputChange = (e) => {
+    let order = this.state.order;
+    order['description'] = e.target.value;
     let errors = this.validateCurrentState(order);
     this.setState({order: order, errors: errors});
   }
@@ -138,7 +145,10 @@ class Order extends React.Component {
               </FormGroup>
               <FormGroup controlId="description">
                 <ControlLabel>Order description</ControlLabel>
-                <FormControl componentClass="textarea" />
+                <FormControl
+                  value={this.state.order.description}
+                  onChange={this.handleDescriptionInputChange}
+                  componentClass="textarea" />
               </FormGroup>
             </Form>
           </Col>
