@@ -153,22 +153,41 @@ class Order extends React.Component {
             </ButtonToolbar>
           </Col>
         </Row>
-        <PicturesPan images={this.state.files} />
+        <PicturesPane images={this.state.files} />
       </Grid>
     );
   }
 }
 
-const PicturesPan = (props) => {
-  let images = [];
-  let rowCount = Math.ceil(props.images / 3);
+const PicturesPane = (props) => {
   let rows = [];
+  let layout = [];
 
-  for (let image of props.images) {
-    images.push(<Image key={image.name} src={window.URL.createObjectURL(image)} responsive />);
-  }
+  props.images.forEach((image, index) => {
+    let rowNum = Math.floor(index / 2);
+    if (rows[rowNum] === undefined)
+      rows[rowNum] = [];
 
-  return(<Row>{images}</Row>);
+      rows[rowNum].push(
+        <Col key={index} sm={4} smOffset={2}>
+          <Image
+            key={image.name}
+            src={window.URL.createObjectURL(image)} thumbnail />
+        </Col>
+      );
+  });
+
+  layout = rows.map((row, index) => {
+    return(
+      <Row className="picturesRow" key={index}>{row}</Row>
+    );
+  });
+
+  return(
+    <React.Fragment>
+      {layout}
+    </React.Fragment>
+  );
 }
 
 export default Order;
