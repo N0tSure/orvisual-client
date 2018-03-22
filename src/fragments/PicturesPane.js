@@ -18,7 +18,6 @@ const PicturesPane = (props) => {
         </Col>
       );
 
-      console.log('name:', image.name, 'type:', image.type, 'size:', image.size);
   });
 
   layout = rows.map((row, index) => {
