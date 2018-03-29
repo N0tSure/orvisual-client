@@ -4,6 +4,6 @@ import OrderForm from './OrderForm';
 
 it('Order form fragment should renders without crashing', () => {
   const root = document.createElement('div');
-  ReactDOM.render(<OrderForm />, root);
+  ReactDOM.render(<OrderForm sendFormData={() => {}}/>, root);
   ReactDOM.unmountComponentAtNode(root);
 })

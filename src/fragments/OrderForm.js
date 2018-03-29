@@ -5,6 +5,8 @@ import {
   FormGroup, ControlLabel, FormControl, InputGroup,
   Button, ButtonToolbar
 } from 'react-bootstrap';
+import Validator from '../validator';
+import PicturesPane from './PicturesPane';
 
 const defaultErrorState = {
   'client-name': 'Name must 2 character minimum',
@@ -25,19 +27,130 @@ const validationProperties = {
 class OrderForm extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      errors: defaultErrorState
-    }
+      order: {
+        client: '',
+        phone: '',
+        email: ''
+      },
+      files: [],
+      errors: Validator.defaultErrorState()
+    };
+
+    this.validator = new Validator({
+      'client': {
+        'error-name': 'client-name',
+        'error-description': 'Name must 2 character minimum',
+        'error-detector': (name) => name.match(/\w{2,}/)
+      },
+      'phone': {
+        'error-name': 'client-phone',
+        'error-description': 'Invalid phone number',
+        'error-detector': (name) => name.match(/\+?\d{4,}/)
+      },
+      'email': {
+        'error-name': 'client-email',
+        'error-description': 'Invalid email address',
+        'error-detector': (name) => name.match(/(\w+@\w{1,})(.*)?/)
+      }
+    });
+
   }
 
-  isValidPropertyByPattern(propName, pattern, target) {
-    return target.hasOwnProperty(propName) && target[propName].match(pattern);
+  handleInputChange = (event, prop) => {
+    let order = this.state.order;
+    order[prop] = event.target.value;
+    let errors = this.validator.validate(order);
+    this.setState({order: order, errors: errors});
   }
 
+  handleFileInput = (e) => {
+    let files = [];
+    files.push.apply(files, e.target.files);
+    this.setState({files: files});
+  }
 
+  handleOrderSubmission = () => {
+    this.props.sendFormData(this.state.order, this.state.files);
+  }
 
   render() {
-    return(<div></div>)
+    return(
+      <Grid fluid>
+        <Row>
+          <Col sm={8} smOffset={2}>
+            <Form>
+              <FormGroup controlId="name"
+                validationState={this.state.errors.findError('client-name') ? 'warning' : 'success'}>
+                  <ControlLabel>Name</ControlLabel>
+                  <FormControl
+                   type="text"
+                   value={this.state.order.client}
+                   onChange={(e) => { this.handleInputChange(e, 'client')}}
+                   placeholder="Enter your name" />
+                  <FormControl.Feedback />
+                  <HelpBlock>{this.state.errors.findError('client-name')}</HelpBlock>
+              </FormGroup>
+              <FormGroup controlId="phone"
+                validationState={this.state.errors.findError('client-phone') ? 'warning' : 'success'}>
+                <ControlLabel>Phone number</ControlLabel>
+                <InputGroup>
+                  <InputGroup.Addon>
+                    <Glyphicon glyph="phone" />
+                  </InputGroup.Addon>
+                  <FormControl
+                    type="text"
+                    value={this.state.order.phone}
+                    onChange={(e) => { this.handleInputChange(e, 'phone')}}
+                    placeholder="Enter your phone number" />
+                </InputGroup>
+                <FormControl.Feedback />
+                <HelpBlock>{this.state.errors.findError('client-phone')}</HelpBlock>
+              </FormGroup>
+              <FormGroup controlId="email"
+                validationState={this.state.errors.findError('client-email') ? 'warning' : 'success'}>
+                <ControlLabel>Email address</ControlLabel>
+                <InputGroup>
+                  <InputGroup.Addon>
+                    <Glyphicon glyph="envelope" />
+                  </InputGroup.Addon>
+                  <FormControl
+                    type="text"
+                    value={this.state.order.email}
+                    onChange={(e) => { this.handleInputChange(e, 'email')}}
+                    placeholder="Enter your email address" />
+                </InputGroup>
+                <FormControl.Feedback />
+                <HelpBlock>{this.state.errors.findError('client-email')}</HelpBlock>
+              </FormGroup>
+              <FormGroup controlId="description">
+                <ControlLabel>Order description</ControlLabel>
+                <FormControl
+                  placeholder="Enter additional order details"
+                  value={this.state.order.description}
+                  onChange={(e) => { this.handleInputChange(e, 'description')}}
+                  componentClass="textarea" />
+              </FormGroup>
+              <FormGroup controlId="pictures" bsClass="hidden">
+                <FormControl type="file" multiple onChange={this.handleFileInput} />
+              </FormGroup>
+            </Form>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={8} smOffset={2} smPush={6}>
+            <ButtonToolbar>
+              <Button componentClass="label" htmlFor="pictures">Add picture</Button>
+              <Button disabled={this.state.errors.hasErrors()} onClick={this.handleOrderSubmission}>
+                Submit
+              </Button>
+            </ButtonToolbar>
+          </Col>
+        </Row>
+        <PicturesPane images={this.state.files} />
+      </Grid>
+    )
   }
 }
 
