@@ -4,6 +4,20 @@ const constraintAttrs = [
   {'name': 'error-detector', 'type': 'function'}
 ];
 
+/**
+ * This class provides basic functional for form model validations.
+ * For creation instance you should take constraints object to constructor,
+ * which must contain one constraint minimum. Keys presented as field name and
+ * values are constraint for each of them.
+ * Constraint should be created for all fields, which must be valid. It's must
+ * have these attributes:
+ *  1) error-name -- this is name of constraint
+ *  2) error-description -- description of constraint violation for client
+ *  3) error-detector -- this is function, which detect constraint violation
+ *
+ * Error detection function must take one parameter, which must interpret as
+ * validating filed.
+ */
 class Validator {
   constructor(props) {
     this.fields = Object.keys(props);
@@ -32,6 +46,24 @@ class Validator {
     });
   }
 
+  /**
+   * Returns default errors object, which contain only functions,
+   * which says that target object probably not valid yet.
+   */
+  static defaultErrorState() {
+    return {
+      'hasErrors': () => true,
+      'findError': (name) => true
+      };
+  }
+
+ /**
+  * Tackes target object and validate it. Returns errors object, which contains
+  * violations and support functions:
+  *  1) findError -- takes error name and return desctiption if error ocured
+  *   or null
+  *  2) hasErrors -- return true if any error occured
+  */
   validate = (target) => {
     const errors = {};
     this.fields.forEach((field) => {
@@ -42,17 +74,10 @@ class Validator {
 
     });
 
-    errors.hasErrors = () => {
-      return this.hasErrors(errors);
-    };
-
-    errors.findError = (name) => {
-      return this.findError(name, errors);
-    }
-
+    errors.hasErrors = () => this.hasErrors(errors);
+    errors.findError = (name) => this.findError(name, errors);
     return errors;
   }
-
 
   findError = (errorName, errors) => {
     return errors[errorName] ? errors[errorName] : null;
@@ -60,7 +85,7 @@ class Validator {
 
   hasErrors = (errors) => {
     return Object.keys(errors)
-      .some(attrName => typeof(errors[attrName]) != 'function');
+      .some(attrName => typeof(errors[attrName]) !== 'function');
 
   }
 
