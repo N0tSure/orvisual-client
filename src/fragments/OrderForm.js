@@ -77,7 +77,7 @@ class OrderForm extends React.Component {
 
   render() {
     return(
-      <Grid fluid>
+      <React.Fragment>
         <Row>
           <Col sm={8} smOffset={2}>
             <Form>
@@ -149,7 +149,7 @@ class OrderForm extends React.Component {
           </Col>
         </Row>
         <PicturesPane images={this.state.files} />
-      </Grid>
+      </React.Fragment>
     )
   }
 }
