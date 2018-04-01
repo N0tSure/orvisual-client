@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Alert,
   Grid, Row, Col,
-  Button, ListGroup, ListGroupItem
+  Button, ListGroup, ListGroupItem, Navbar
 } from 'react-bootstrap';
 import OrderForm from './fragments/OrderForm';
 import { Link } from "react-router-dom";
@@ -49,6 +49,24 @@ class Order extends React.Component {
 
     return(
       <Grid fluid>
+        <Navbar fixedTop>
+          <Navbar.Header>
+            <Navbar.Brand>
+              <Link to="/">Home</Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+          </Navbar.Header>
+        </Navbar>
+        <Row>
+          <Col sm={8} smOffset={2}>
+            <h2>Sign up order</h2>
+            <p>
+              Give your contacts for us to make order. Also you can describe
+              your order details and upload some pictures of elements which you
+              want to repair.
+            </p>
+          </Col>
+        </Row>
         {funcBlock}
       </Grid>
     );
@@ -90,7 +108,7 @@ const OrderSubmissionWithWarnings = (props) => {
     <Alert bsStyle="warning">
       <h2>Order submitted but some problems occurred</h2>
       <p>These files not been sended:</p>
-      <ListGroup >{listItems}</ListGroup>
+      <ListGroup>{listItems}</ListGroup>
       <Link to="/">Go Home</Link>
     </Alert>
   );

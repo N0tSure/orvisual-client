@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Panel } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 import './Pricing.css';
 
