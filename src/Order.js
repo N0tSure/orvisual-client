@@ -1,10 +1,8 @@
 import React from 'react';
 import {
   Alert,
-  Grid, Row, Col, Glyphicon,
-  Form, HelpBlock,
-  FormGroup, ControlLabel, FormControl, InputGroup,
-  Button, ButtonToolbar
+  Grid, Row, Col,
+  Button, ListGroup, ListGroupItem
 } from 'react-bootstrap';
 import OrderForm from './fragments/OrderForm';
 import { Link } from "react-router-dom";
@@ -12,12 +10,13 @@ import { Link } from "react-router-dom";
 const initialState = 'initial-state';
 const successState = 'success-state';
 const failedState = 'failed-state';
+const warningState = 'warning-state';
 
 class Order extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      control: props.match.params.control
+      control: initialState
     };
   }
 
@@ -26,20 +25,28 @@ class Order extends React.Component {
     console.log(files.reduce(
       (result, curr) => result += curr.name + ', '
       , '').slice(0, -2));
+
+    this.setState({ control: warningState, files: files });
   }
 
   render() {
     let funcBlock = null;
     switch (this.state.control) {
-      case 'success':
+      case successState:
         funcBlock = <SuccessfulOrderSubmission />;
         break;
-      case 'failed':
-        funcBlock = <FailedOrderSubmission url={this.props.match.url}/>
+      case failedState:
+        funcBlock = <FailedOrderSubmission
+          returnToForm={() => this.setState({ control: initialState })} />;
+        break;
+      case warningState:
+        funcBlock = <OrderSubmissionWithWarnings
+          files={this.state['files'] ? this.state['files'] : []} />;
         break;
       default:
         funcBlock = <OrderForm sendFormData={this.processOrderData} />;
     }
+
     return(
       <Grid fluid>
         {funcBlock}
@@ -57,9 +64,11 @@ const FailedOrderSubmission = (props) => {
         back on home page.
       </p>
       <p>
-        <Link to={`${props.url}/order`}>Try again</Link>
+        <Button
+          bsStyle="danger"
+          onClick={props.returnToForm}>Try again</Button>
         <span> or </span>
-        <Link to="/">Go Back</Link>
+        <Link to="/">Go Home</Link>
       </p>
     </Alert>
   );
@@ -70,6 +79,19 @@ const SuccessfulOrderSubmission = () => {
     <Alert bsStyle="success">
       <h2>Submittied!</h2>
       <p>Order has been successfully submit. We contact you soon for details.</p>
+      <Link to="/">Go Home</Link>
+    </Alert>
+  );
+};
+
+const OrderSubmissionWithWarnings = (props) => {
+  let listItems = props.files.map((file) => <ListGroupItem bsStyle="warning">{file.name}</ListGroupItem>);
+  return(
+    <Alert bsStyle="warning">
+      <h2>Order submitted but some problems occurred</h2>
+      <p>These files not been sended:</p>
+      <ListGroup >{listItems}</ListGroup>
+      <Link to="/">Go Home</Link>
     </Alert>
   );
 };

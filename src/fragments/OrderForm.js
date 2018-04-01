@@ -1,28 +1,12 @@
 import React from 'react';
 import {
-  Grid, Row, Col, Glyphicon,
-  Form, HelpBlock,
-  FormGroup, ControlLabel, FormControl, InputGroup,
+  Row, Col,
+  Glyphicon,
+  Form, HelpBlock, FormGroup, ControlLabel, FormControl, InputGroup,
   Button, ButtonToolbar
 } from 'react-bootstrap';
 import Validator from '../validator';
 import PicturesPane from './PicturesPane';
-
-const defaultErrorState = {
-  'client-name': 'Name must 2 character minimum',
-  'client-phone': 'Invalid phone number',
-  'client-email': 'Invalid email address'
-};
-
-const validationProperties = {
-  'restricted-fields': ['client', 'phone', 'email'],
-  'validations': {
-    'client': {
-      'error-name': 'client-name',
-      'error-description': 'Name must 2 character minimum',
-    }
-  }
-}
 
 class OrderForm extends React.Component {
   constructor(props) {
