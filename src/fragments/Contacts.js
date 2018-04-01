@@ -41,11 +41,10 @@ function Footer(props) {
         <Glyphicon glyph="chevron-up" />
       </a>
       <p>
-        This page was created, using Twitter Bootstrap theme
-        <a
-         href="https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp">
-         Company</a>. Thanks to <a href="https://www.w3schools.com">w3schools</a>.
-        </p>
+        <span>This page was created, using Twitter Bootstrap theme </span>
+        <a href="https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp">Company</a>.
+        <span> Thanks to <a href="https://www.w3schools.com">W3Schools</a>.</span>
+      </p>
     </Grid>
   );
 }

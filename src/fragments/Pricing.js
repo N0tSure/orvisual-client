@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 import './Pricing.css';
 
 class Pricing extends Component {
@@ -24,7 +25,7 @@ class Pricing extends Component {
               <Panel.Footer>
                 <h3>$20</h3>
                 <h4>per element</h4>
-                <Button bsSize="large">Sign up</Button>
+                <Link className="btn btn-default btn-lg" to="/order">Sign up</Link>
               </Panel.Footer>
             </Panel>
           </Col>
@@ -43,7 +44,7 @@ class Pricing extends Component {
               <Panel.Footer>
                 <h3>$500</h3>
                 <h4>in basic case</h4>
-                <Button bsSize="large">Sign up</Button>
+                <Link className="btn btn-default btn-lg" to="/order">Sign up</Link>
               </Panel.Footer>
             </Panel>
           </Col>
