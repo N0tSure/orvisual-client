@@ -1,0 +1,4 @@
+/* Makes file uploading failures list item border invisible */
+.upload-filed-list .list-group-item {
+  border: 0px;
+}

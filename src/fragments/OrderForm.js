@@ -64,6 +64,16 @@ class OrderForm extends React.Component {
       <React.Fragment>
         <Row>
           <Col sm={8} smOffset={2}>
+            <h2>Sign up order</h2>
+            <p>
+              Give your contacts for us to make order. Also you can describe
+              your order details and upload some pictures of elements which you
+              want to repair.
+            </p>
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={8} smOffset={2}>
             <Form>
               <FormGroup controlId="name"
                 validationState={this.state.errors.findError('client-name') ? 'warning' : 'success'}>

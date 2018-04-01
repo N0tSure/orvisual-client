@@ -6,6 +6,7 @@ import {
 } from 'react-bootstrap';
 import OrderForm from './fragments/OrderForm';
 import { Link } from "react-router-dom";
+import './Order.css';
 
 const initialState = 'initial-state';
 const successState = 'success-state';
@@ -57,16 +58,6 @@ class Order extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
         </Navbar>
-        <Row>
-          <Col sm={8} smOffset={2}>
-            <h2>Sign up order</h2>
-            <p>
-              Give your contacts for us to make order. Also you can describe
-              your order details and upload some pictures of elements which you
-              want to repair.
-            </p>
-          </Col>
-        </Row>
         {funcBlock}
       </Grid>
     );
@@ -75,42 +66,58 @@ class Order extends React.Component {
 
 const FailedOrderSubmission = (props) => {
   return(
-    <Alert bsStyle="danger">
-      <h2>Oops! Something going wrong!</h2>
-      <p>
-        Looks like order submission failed. You can repeat form filling, or go
-        back on home page.
-      </p>
-      <p>
-        <Button
-          bsStyle="danger"
-          onClick={props.returnToForm}>Try again</Button>
-        <span> or </span>
-        <Link to="/">Go Home</Link>
-      </p>
-    </Alert>
+    <Row>
+      <Col sm={8} smOffset={2}>
+        <Alert bsStyle="danger">
+          <h2>Oops! Something going wrong!</h2>
+          <p>
+            Looks like order submission failed. You can repeat form filling, or go
+            back on home page.
+          </p>
+          <p>
+            <Button
+              bsStyle="danger"
+              onClick={props.returnToForm}>Try again</Button>
+            <span> or </span>
+            <Link className="btn btn-default" to="/">Go Home</Link>
+          </p>
+        </Alert>
+      </Col>
+    </Row>
   );
 };
 
 const SuccessfulOrderSubmission = () => {
   return(
-    <Alert bsStyle="success">
-      <h2>Submittied!</h2>
-      <p>Order has been successfully submit. We contact you soon for details.</p>
-      <Link to="/">Go Home</Link>
-    </Alert>
+    <Row>
+      <Col sm={8} smOffset={2}>
+        <Alert bsStyle="success">
+          <h2>Submittied!</h2>
+          <p>Order has been successfully submit. We contact you soon for details.</p>
+          <Link className="btn btn-default" to="/">Go Home</Link>
+        </Alert>
+      </Col>
+    </Row>
   );
 };
 
 const OrderSubmissionWithWarnings = (props) => {
   let listItems = props.files.map((file) => <ListGroupItem bsStyle="warning">{file.name}</ListGroupItem>);
   return(
-    <Alert bsStyle="warning">
-      <h2>Order submitted but some problems occurred</h2>
-      <p>These files not been sended:</p>
-      <ListGroup>{listItems}</ListGroup>
-      <Link to="/">Go Home</Link>
-    </Alert>
+    <Row>
+      <Col sm={8} smOffset={2}>
+        <Alert bsStyle="warning">
+          <h2>Order submitted but some problems occurred</h2>
+          <p>
+            These files not been sended:
+            <ListGroup className="upload-filed-list">{listItems}</ListGroup>
+          </p>
+          <p>
+            <Link className="btn btn-default" to="/">Go Home</Link>
+          </p>
+        </Alert>
+      </Col>
+    </Row>
   );
 };
 
