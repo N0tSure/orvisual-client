@@ -1,0 +1,21 @@
+.picture-block {
+  position: relative;
+  padding-top: 10px;
+}
+
+.picture-block .btn {
+  position: absolute;
+  top: 15%;
+  left: 90%;
+  transform: translate(-12%, -90%);
+  -ms-transform: translate(-50%, -50%);
+  border-radius: 8px;
+}
+
+.picture-block img:hover {
+  /* makes pretty shadow with
+     horizontal offset 5 pexels,
+     vertical offset 0 pixels
+     blur radius 40 pixels*/
+  box-shadow: 5px 0px 40px rgba(0, 0, 0, 0.2);
+}
