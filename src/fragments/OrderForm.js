@@ -50,13 +50,22 @@ class OrderForm extends React.Component {
   }
 
   handleFileInput = (e) => {
-    let files = [];
-    files.push.apply(files, e.target.files);
+    let files = this.state.files;
+    let acceptibleFiles = Array.from(e.target.files).filter(
+      file => file.size <= 1e+7 && file.type.match(/image\/.*/)
+    );
+    files.push.apply(files, acceptibleFiles);
     this.setState({files: files});
   }
 
   handleOrderSubmission = () => {
     this.props.sendFormData(this.state.order, this.state.files);
+  }
+
+  removeFileItem = (fileIndex) => {
+    let files = this.state.files;
+    files.splice(fileIndex, 1);
+    this.setState({files: files});
   }
 
   render() {
@@ -127,7 +136,11 @@ class OrderForm extends React.Component {
                   componentClass="textarea" />
               </FormGroup>
               <FormGroup controlId="pictures" bsClass="hidden">
-                <FormControl type="file" multiple onChange={this.handleFileInput} />
+                <FormControl
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={this.handleFileInput} />
               </FormGroup>
             </Form>
           </Col>
@@ -142,7 +155,7 @@ class OrderForm extends React.Component {
             </ButtonToolbar>
           </Col>
         </Row>
-        <PicturesPane images={this.state.files} />
+        <PicturesPane images={this.state.files} removePicture={this.removeFileItem} />
       </React.Fragment>
     )
   }
