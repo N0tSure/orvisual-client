@@ -8,6 +8,9 @@ import {
 import Validator from '../validator';
 import PicturesPane from './PicturesPane';
 
+/*
+ * This component dislay order form control, pictures pane and validate form.
+ */
 class OrderForm extends React.Component {
   constructor(props) {
     super(props);
@@ -26,22 +29,27 @@ class OrderForm extends React.Component {
       'client': {
         'error-name': 'client-name',
         'error-description': 'Name must 2 character minimum',
-        'error-detector': (name) => name.match(/\w{2,}/)
+        'error-detector': (value) => value.match(/\w{2,}/)
       },
       'phone': {
         'error-name': 'client-phone',
         'error-description': 'Invalid phone number',
-        'error-detector': (name) => name.match(/\+?\d{4,}/)
+        'error-detector': (value) => value.match(/\+?\d{4,}/)
       },
       'email': {
         'error-name': 'client-email',
         'error-description': 'Invalid email address',
-        'error-detector': (name) => name.match(/(\w+@\w{1,})(.*)?/)
+        'error-detector': (value) => value.match(/(\w+@\w{1,})(.*)?/)
       }
     });
 
   }
 
+  /*
+   * Handles input change for given property
+   * @param event: event object
+   * @param prop: property name
+   */
   handleInputChange = (event, prop) => {
     let order = this.state.order;
     order[prop] = event.target.value;
@@ -49,6 +57,10 @@ class OrderForm extends React.Component {
     this.setState({order: order, errors: errors});
   }
 
+  /*
+   * Handles file input and validate file size and type.
+   * File size hardcoded as 5 Mb and type is all image.
+   */
   handleFileInput = (e) => {
     let files = this.state.files;
     let acceptibleFiles = Array.from(e.target.files).filter(
@@ -62,6 +74,10 @@ class OrderForm extends React.Component {
     this.props.sendFormData(this.state.order, this.state.files);
   }
 
+  /*
+   * Removes file from file's array in compment state
+   * @param fileIndex: index of file, which will removed
+   */
   removeFileItem = (fileIndex) => {
     let files = this.state.files;
     files.splice(fileIndex, 1);

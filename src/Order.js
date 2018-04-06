@@ -13,6 +13,10 @@ const successState = 'success-state';
 const failedState = 'failed-state';
 const warningState = 'warning-state';
 
+/*
+ * This component render form for order signup, process form data and
+ * upload user's pictures.
+ */
 class Order extends React.Component {
   constructor(props) {
     super(props);
@@ -64,6 +68,9 @@ class Order extends React.Component {
   }
 }
 
+/*
+ * Informs user about form data submission failed.
+ */
 const FailedOrderSubmission = (props) => {
   return(
     <Row>
@@ -87,6 +94,10 @@ const FailedOrderSubmission = (props) => {
   );
 };
 
+/*
+ * Informs user about successful form data was submitted, and all files
+ * uploaded.
+ */
 const SuccessfulOrderSubmission = () => {
   return(
     <Row>
@@ -101,6 +112,11 @@ const SuccessfulOrderSubmission = () => {
   );
 };
 
+/*
+ * Informs user about form data submitted, but few files uploading failed.
+ * When render, list files, which upload has been failed.
+ * @prop files: list files which upload failed
+ */
 const OrderSubmissionWithWarnings = (props) => {
   let listItems = props.files.map((file) => <ListGroupItem bsStyle="warning">{file.name}</ListGroupItem>);
   return(
