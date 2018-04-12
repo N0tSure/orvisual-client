@@ -1,16 +1,32 @@
-# This front-end for OrdEx application
+# OrVisual Web client
 
-About company template
-[w3schools.com](https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp).
+**OrVisual** is *frontend* application, which provide ordering data
+visualization.
 
-React docs from official [site](https://reactjs.org/docs/hello-world.html).
+Application provides data exchange between service consumer and service
+provider.
 
-About bootstrap project [Create React App]
-(https://github.com/facebook/create-react-app).
+Quite often happens so, that consumer of some service create order, and
+additional order details must be provided. Order details may use by client, for
+resolving cost of service, or for service provider to determine the scope of
+ work and the number of consumables that nay be required for the execution of
+ order.
 
-Using create-react-app in [fullstack development]
-(https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/).
+ It is known that visualization most effective way for communication.
+ **OrVisual** provide opportunity to create order using form and include to the
+ order data additional graphical information.
 
-React's [Routers](https://reacttraining.com/react-router/web/guides/philosophy).
+ * About company template
+[w3schools.com](https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp)
 
-React-Bootstrap [reference](https://react-bootstrap.github.io/).
+ * React docs from official [site](https://reactjs.org/docs/hello-world.html)
+
+ * About bootstrap project [Create React App](https://github.com/facebook/create-react-app)
+
+ * Using create-react-app in [fullstack development](https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/)
+
+ * React's [Routers](https://reacttraining.com/react-router/web/guides/philosophy)
+
+ * React-Bootstrap [reference](https://react-bootstrap.github.io/)
+
+ * Usage of [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)

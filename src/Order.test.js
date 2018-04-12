@@ -8,4 +8,4 @@ it('Order page should renders without crashes', () => {
   let component = <MemoryRouter><Order /></MemoryRouter>
   ReactDOM.render(component, root);
   ReactDOM.unmountComponentAtNode(root);
-})
+});
