@@ -2,16 +2,18 @@ import React from 'react';
 import {
   Alert,
   Grid, Row, Col,
-  Button, ListGroup, ListGroupItem, Navbar
+  Button, ListGroup, ListGroupItem, Navbar, Modal,
+  ProgressBar
 } from 'react-bootstrap';
 import OrderForm from './fragments/OrderForm';
 import { Link } from "react-router-dom";
 import './Order.css';
 
-const initialState = 'initial-state';
-const successState = 'success-state';
-const failedState = 'failed-state';
-const warningState = 'warning-state';
+const READY = 'initial-state';
+const SUCCCESS = 'success-state';
+const FAILURE = 'failed-state';
+const WARNING = 'warning-state';
+const UPLOADING = 'uploading-state'
 
 /*
  * This component render form for order signup, process form data and
@@ -21,30 +23,60 @@ class Order extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      control: initialState
+      control: READY,
+      orderModel: null,
+      files: [],
+      processStatus: 0,
+      statusStep: 0
     };
   }
 
   processOrderData = (order, files) => {
-    console.log(JSON.stringify(order));
-    console.log(files.reduce(
-      (result, curr) => result += curr.name + ', '
-      , '').slice(0, -2));
+    // console.log(JSON.stringify(order));
+    // console.log(files.reduce((result, curr) => result += curr.name + ', ' , '').slice(0, -2));
+    let copiedState = Object.assign({} , this.state);
+    copiedState.statusStep = Math.ceil(100 / (files.length + 1));
+    copiedState.processStatus = 0;
+    copiedState.orderModel = order;
+    copiedState.files = files;
+    copiedState.control = UPLOADING;
+    this.setState(copiedState);
+  };
 
-    this.setState({ control: warningState, files: files });
+  uploadOrderDetails = () => {
+    if (this.state.control === UPLOADING && this.state.orderModel) {
+      this.createPromise(2000, "order uploaded").then(() => this.setState({orderModel: null}));
+    }
+  };
+
+  uploadNextFile = () => {
+    if (this.state.control === UPLOADING && !this.state.orderModel && this.state.files.length > 0) {
+      let copiedState = Object.assign({}, this.state);
+      this.createPromise(2000, `file `)
+    }
   }
 
+  createPromise = (timeout, message) => {
+    return new Promise(function(resolve, reject) {
+      setTimeout(function () {
+        resolve(message);
+        console.log(message);
+      }, timeout);
+    });
+  };
+
   render() {
+    this.uploadOrderDetails();
     let funcBlock = null;
     switch (this.state.control) {
-      case successState:
+      case SUCCCESS:
         funcBlock = <SuccessfulOrderSubmission />;
         break;
-      case failedState:
+      case FAILURE:
         funcBlock = <FailedOrderSubmission
-          returnToForm={() => this.setState({ control: initialState })} />;
+          returnToForm={() => this.setState({ control: READY })} />;
         break;
-      case warningState:
+      case WARNING:
         funcBlock = <OrderSubmissionWithWarnings
           files={this.state['files'] ? this.state['files'] : []} />;
         break;
@@ -62,6 +94,16 @@ class Order extends React.Component {
             <Navbar.Toggle />
           </Navbar.Header>
         </Navbar>
+        <Row>
+          <Modal show={this.state.control === UPLOADING}>
+            <Modal.Header>
+              <Modal.Title>Publishing order details</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <ProgressBar active now={45}/>
+            </Modal.Body>
+          </Modal>
+        </Row>
         {funcBlock}
       </Grid>
     );
