@@ -49,6 +49,8 @@ class Validator {
   /**
    * Returns default errors object, which contain only functions,
    * which says that target object probably not valid yet.
+   *
+   * @return {@link Object} with permament error state
    */
   static defaultErrorState() {
     return {
@@ -58,11 +60,14 @@ class Validator {
   }
 
  /**
-  * Tackes target object and validate it. Returns errors object, which contains
-  * violations and support functions:
-  *  1) findError -- takes error name and return desctiption if error ocured
-  *   or null
+  * Tackes target object and validate it. Returns errors object,
+  * which contains violations and support functions:
+  *  1) findError -- takes error name and return desctiption if
+  *     error ocured or null
   *  2) hasErrors -- return true if any error occured
+  *
+  * @param target: target instance, which will be validated
+  * @return instance with information about constraint violations
   */
   validate = (target) => {
     const errors = {};
@@ -79,10 +84,24 @@ class Validator {
     return errors;
   }
 
+  /**
+   * Finds constraint violation description by name in given
+   * constraint violation container.
+   *
+   * @param errorName: name of error
+   * @param errors: constraint violation container
+   * @return constraint violation description
+   */
   findError = (errorName, errors) => {
     return errors[errorName] ? errors[errorName] : null;
   }
 
+  /**
+   * Check for constraint violation in given constraint
+   * violation container.
+   * @param errors: constraint violation container
+   * @return {@code true} if present just one violation
+   */
   hasErrors = (errors) => {
     return Object.keys(errors)
       .some(attrName => typeof(errors[attrName]) !== 'function');
