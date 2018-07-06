@@ -71,6 +71,10 @@ class OrderForm extends React.Component {
     this.setState({files: files});
   }
 
+  /**
+   * Give current state order model and files to {@link Order}
+   * component.
+   */
   handleOrderSubmission = () => {
     this.props.sendFormData(this.state.order, this.state.files);
   }
