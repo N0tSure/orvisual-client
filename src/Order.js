@@ -17,10 +17,11 @@ const ORDER_UPLOADING = 'uploading';
 const FILE_UPLOADING = 'file-uploading';
 
 /*
- * This component render form for order signup, process form data and
- * upload user's pictures.
+ * This component render form for order publishing, process form
+ * data and upload user's pictures.
  */
 class Order extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
@@ -33,36 +34,21 @@ class Order extends React.Component {
     };
   }
 
-  processOrderData = (order, files) => {
-    let copiedState = Object.assign({} , this.state);
-    copiedState.statusStep = Math.ceil(100 / (files.length + 1));
-    copiedState.processStatus = 0;
-    copiedState.orderModel = order;
-    copiedState.files = files;
-    copiedState.failedUploadings = [];
-    copiedState.control = ORDER_UPLOADING;
-    this.setState(copiedState);
-  };
-
-  uploadOrder = async () => {
-    fetch(`${window.origin}/api/orders`, {
-      method: 'POST',
-      body: JSON.stringify(this.state.orderModel),
-      headers: { 'Content-Type' : 'application/json' }
-    }).then(response => response.ok ? response.json() : Promise.reject(response.status))
-      .then(order => this.setState({
-        processStatus: this.state.processStatus + this.state.statusStep,
-        control: this.state.files.length ? FILE_UPLOADING : SUCCCESS,
-        orderModel: order
-      }))
-      .catch(reason => this.setState({ control: FAILURE }));
-  };
-
-
+  /**
+   * Check current state, for Order publishing process.
+   * @return true if component in one of 'publishing' state
+   */
   checkUplodingState = () => {
     return (this.state.control === ORDER_UPLOADING || this.state.control === FILE_UPLOADING);
   };
 
+  /**
+   * This function upload one user's file (if present), wait for
+   * uploading and if it uploaded successfully associate picture
+   * resource with early uploaded order. If state haven't any files
+   * set 'WARNING' or 'SUCCCESS' status. In case of failure added
+   * failed file to state.
+   */
   fileUploading = async () => {
     const copiedState = Object.assign({}, this.state);
     if (copiedState.files.length) {
@@ -78,7 +64,6 @@ class Order extends React.Component {
         }).then(response => response.ok ? response.json() : Promise.reject(response.status))
         .then(picture => picture['_links']['self'])
         .catch(error => {
-          console.log(`On uploading ${error}`);
           copiedState.failedUploadings.push(file);
           copiedState.processStatus = copiedState.processStatus + copiedState.statusStep;
           this.setState(copiedState);
@@ -103,7 +88,6 @@ class Order extends React.Component {
           copiedState.control = status;
           this.setState(copiedState);
         }).catch(error => {
-          console.log(`On binding ${error}, uri: ${copiedState.orderModel['_links']['pictures'].href}`);
           copiedState.failedUploadings.push(file);
           copiedState.processStatus = copiedState.processStatus + copiedState.statusStep;
           this.setState(copiedState);
@@ -118,6 +102,28 @@ class Order extends React.Component {
     }
   };
 
+  /**
+   * Switch component state to order posting state, set process
+   * status step, drop previous state.
+   * @param order: order model
+   * @param files: picture file's list
+   */
+  processOrderData = (order, files) => {
+    let copiedState = Object.assign({} , this.state);
+    copiedState.statusStep = Math.ceil(100 / (files.length + 1));
+    copiedState.processStatus = 0;
+    copiedState.orderModel = order;
+    copiedState.files = files;
+    copiedState.failedUploadings = [];
+    copiedState.control = ORDER_UPLOADING;
+    this.setState(copiedState);
+  };
+
+  /**
+   * Return central area content, regarding current component
+   * state.
+   * @return React JSX {@link React.Component}
+   */
   renderCentralLayout = () => {
     switch (this.state.control) {
       case SUCCCESS:
@@ -130,6 +136,25 @@ class Order extends React.Component {
       default:
         return (<OrderForm sendFormData={this.processOrderData} />);
     }
+  };
+
+  /**
+   * Upload order model to server, if {@link Promise} resolve, set
+   * order resource, returned from server to state. In other case
+   * set component state failed.
+   */
+  uploadOrder = async () => {
+    fetch(`${window.origin}/api/orders`, {
+      method: 'POST',
+      body: JSON.stringify(this.state.orderModel),
+      headers: { 'Content-Type' : 'application/json' }
+    }).then(response => response.ok ? response.json() : Promise.reject(response.status))
+      .then(order => this.setState({
+        processStatus: this.state.processStatus + this.state.statusStep,
+        control: this.state.files.length ? FILE_UPLOADING : SUCCCESS,
+        orderModel: order
+      }))
+      .catch(reason => this.setState({ control: FAILURE }));
   };
 
   componentDidUpdate(prevProps, prevState, snapshot) {
@@ -219,7 +244,7 @@ const SuccessfulOrderSubmission = () => {
  */
 const OrderSubmissionWithWarnings = (props) => {
   let listItems = props.files
-    .map((file) => <ListGroupItem bsStyle="warning">{file.name}</ListGroupItem>);
+    .map((file) => (<ListGroupItem key={file.name} bsStyle="warning">{file.name}</ListGroupItem>));
   return(
     <Row>
       <Col sm={8} smOffset={2}>
@@ -227,8 +252,10 @@ const OrderSubmissionWithWarnings = (props) => {
           <h2>Order submitted but some problems occurred</h2>
           <p>
             These files not been sended:
-            <ListGroup className="upload-filed-list">{listItems}</ListGroup>
           </p>
+          <div>
+            <ListGroup className="upload-filed-list">{listItems}</ListGroup>
+          </div>
           <p>
             <Link className="btn btn-default" to="/">Go Home</Link>
           </p>
