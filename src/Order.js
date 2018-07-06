@@ -45,21 +45,17 @@ class Order extends React.Component {
   };
 
   uploadOrder = async () => {
-    new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.random() > 0.2) {
-          console.log('Ordere accepted');
-          resolve(Object.assign({}, this.state.orderModel));
-        } else {
-          console.log('Order rejected');
-          reject('Failed');
-        }
-      }, 1000);
-    }).then(response => this.setState({
-      processStatus: this.state.processStatus + this.state.statusStep,
-      control: this.state.files.length ? FILE_UPLOADING : SUCCCESS,
-      orderModel: response
-    })).catch(reason => this.setState({ control: FAILURE }));
+    fetch(`${window.origin}/api/orders`, {
+      method: 'POST',
+      body: JSON.stringify(this.state.orderModel),
+      headers: { 'Content-Type' : 'application/json' }
+    }).then(response => response.ok ? response.json() : Promise.reject(response.status))
+      .then(order => this.setState({
+        processStatus: this.state.processStatus + this.state.statusStep,
+        control: this.state.files.length ? FILE_UPLOADING : SUCCCESS,
+        orderModel: order
+      }))
+      .catch(reason => this.setState({ control: FAILURE }));
   };
 
 
@@ -69,44 +65,49 @@ class Order extends React.Component {
 
   fileUploading = async () => {
     const copiedState = Object.assign({}, this.state);
-    const file = copiedState.files.pop();
-    if (file) {
-      const uploadedFileURL =
-        await new Promise((resolve, reject) => setTimeout(() => {
-          if (Math.random() > 0.1) {
-            console.log(`File ${file.name} resolved.`);
-            resolve(`file ${file.name}`);
-          } else {
-            console.log(`File ${file.name} failed.`);
-            reject('Failed');
-          }
-        }, 500))
-        .then(pictureResource => file.name)
+    if (copiedState.files.length) {
+
+      const file = copiedState.files.pop();
+      const form = new FormData();
+      form.append('image', file);
+
+      const uploadedPictureURL =
+        await fetch(`${window.origin}/api/files`, {
+          method: 'POST',
+          body: form
+        }).then(response => response.ok ? response.json() : Promise.reject(response.status))
+        .then(picture => picture['_links']['self'])
         .catch(error => {
+          console.log(`On uploading ${error}`);
           copiedState.failedUploadings.push(file);
           copiedState.processStatus = copiedState.processStatus + copiedState.statusStep;
           this.setState(copiedState);
         });
 
-      if (uploadedFileURL) {
-        new Promise((resolve, reject) => setTimeout(() => resolve(uploadedFileURL), 500))
-          .then(response => {
-            if (copiedState.files.length) {
-              return FILE_UPLOADING;
-            } else if (copiedState.failedUploadings.length) {
-              return WARNING;
-            } else {
-              return SUCCCESS;
-            }
-          }).then(status => {
-            copiedState.processStatus = copiedState.processStatus + copiedState.statusStep;
-            copiedState.control = status;
-            this.setState(copiedState)
-          }).catch(error => {
-            copiedState.failedUploadings.push(file);
-            copiedState.processStatus = copiedState.processStatus + copiedState.statusStep;
-            this.setState(copiedState);
-          });
+      if (uploadedPictureURL) {
+        fetch(copiedState.orderModel['_links'].pictures.href, {
+          method: 'POST',
+          body: uploadedPictureURL.href,
+          headers: { 'Content-Type': 'text/uri-list' }
+        }).then(response => response.ok ? response : Promise.reject(response.status))
+        .then(response => {
+          if (copiedState.files.length) {
+            return FILE_UPLOADING;
+          } else if (copiedState.failedUploadings.length) {
+            return WARNING;
+          } else {
+            return SUCCCESS;
+          }
+        }).then(status => {
+          copiedState.processStatus = copiedState.processStatus + copiedState.statusStep;
+          copiedState.control = status;
+          this.setState(copiedState);
+        }).catch(error => {
+          console.log(`On binding ${error}, uri: ${copiedState.orderModel['_links']['pictures'].href}`);
+          copiedState.failedUploadings.push(file);
+          copiedState.processStatus = copiedState.processStatus + copiedState.statusStep;
+          this.setState(copiedState);
+        });
       }
 
     } else {
