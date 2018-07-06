@@ -17,26 +17,27 @@ class OrderForm extends React.Component {
 
     this.state = {
       order: {
-        client: '',
-        phone: '',
-        email: ''
+        clientName: '',
+        clientPhone: '',
+        clientEmail: '',
+        description: ''
       },
       files: [],
       errors: Validator.defaultErrorState()
     };
 
     this.validator = new Validator({
-      'client': {
+      'clientName': {
         'error-name': 'client-name',
         'error-description': 'Name must 2 character minimum',
         'error-detector': (value) => value.match(/\w{2,}/)
       },
-      'phone': {
+      'clientPhone': {
         'error-name': 'client-phone',
         'error-description': 'Invalid phone number',
         'error-detector': (value) => value.match(/\+?\d{4,}/)
       },
-      'email': {
+      'clientEmail': {
         'error-name': 'client-email',
         'error-description': 'Invalid email address',
         'error-detector': (value) => value.match(/(\w+@\w{1,})(.*)?/)
@@ -105,8 +106,8 @@ class OrderForm extends React.Component {
                   <ControlLabel>Name</ControlLabel>
                   <FormControl
                    type="text"
-                   value={this.state.order.client}
-                   onChange={(e) => { this.handleInputChange(e, 'client')}}
+                   value={this.state.order.clientName}
+                   onChange={(e) => { this.handleInputChange(e, 'clientName')}}
                    placeholder="Enter your name" />
                   <FormControl.Feedback />
                   <HelpBlock>{this.state.errors.findError('client-name')}</HelpBlock>
@@ -120,8 +121,8 @@ class OrderForm extends React.Component {
                   </InputGroup.Addon>
                   <FormControl
                     type="text"
-                    value={this.state.order.phone}
-                    onChange={(e) => { this.handleInputChange(e, 'phone')}}
+                    value={this.state.order.clientPhone}
+                    onChange={(e) => { this.handleInputChange(e, 'clientPhone')}}
                     placeholder="Enter your phone number" />
                 </InputGroup>
                 <FormControl.Feedback />
@@ -136,8 +137,8 @@ class OrderForm extends React.Component {
                   </InputGroup.Addon>
                   <FormControl
                     type="text"
-                    value={this.state.order.email}
-                    onChange={(e) => { this.handleInputChange(e, 'email')}}
+                    value={this.state.order.clientEmail}
+                    onChange={(e) => { this.handleInputChange(e, 'clientEmail')}}
                     placeholder="Enter your email address" />
                 </InputGroup>
                 <FormControl.Feedback />
