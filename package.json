@@ -1,6 +1,6 @@
 {
-  "name": "ordex-frontend",
-  "version": "0.1.0",
+  "name": "orvisual-client",
+  "version": "0.1.0-SNAPSHOT",
   "private": true,
   "dependencies": {
     "bootstrap": "^3.3.7",
