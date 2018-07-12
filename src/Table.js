@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import { makeData, sortData } from './Utils';
+import { makeData, sortData, transformStatusColumnSort } from './Utils';
 import { Grid, Row } from 'react-bootstrap';
 import './Table.css';
 
@@ -71,16 +71,35 @@ const StatusSpan = (props) => {
 };
 
 const processData = (pageSize, pageNum, sorted) => {
-  return new Promise((resolve, reject) => {
-    let filteredData = rawData;
-    const sortedData = sortData(filteredData, sorted);
-    const res = {
-      rows: sortedData.slice(pageSize * pageNum, pageSize * pageNum + pageSize),
-      pages: Math.ceil(filteredData.length / pageSize)
-    };
+  const sortOrders = transformStatusColumnSort(sorted);
+  const url = sortOrders.reduce((accUrl, sort) => {
+    accUrl.searchParams.append('sort', `${sort.id},${sort.desc ? 'desc' : 'asc'}`);
+    return accUrl;
+  }, new URL('/api/orders', window.origin));
+  url.searchParams.append('page', pageNum);
+  url.searchParams.append('size', pageSize);
 
-    setTimeout(() => resolve(res), 500);
-  });
+  console.log('Request url:', url);
+
+  return fetch(url)
+    .then(resp => resp.ok ? resp.json() : Promise.reject(resp.status))
+    .then(data => {
+      return {
+        rows: data['_embedded']['orders'],
+        pages: data['page']['totalPages']
+      };
+    }).catch(error => console.error('Failed: ', error));
+
+  // return new Promise((resolve, reject) => {
+  //   let filteredData = rawData;
+  //   const sortedData = sortData(filteredData, sorted);
+  //   const res = {
+  //     rows: sortedData.slice(pageSize * pageNum, pageSize * pageNum + pageSize),
+  //     pages: Math.ceil(filteredData.length / pageSize)
+  //   };
+  //
+  //   setTimeout(() => resolve(res), 500);
+  // });
 };
 
 const transformColumns = row => {
