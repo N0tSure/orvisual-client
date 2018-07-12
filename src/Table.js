@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import { makeData, sortData } from './Utils';
 import { Grid, Row } from 'react-bootstrap';
 import './Table.css';
 
-const rawData = makeData(500);
 
+/**
+ * This component represent Order management table.
+ */
 class Table extends React.Component {
   constructor(props) {
     super(props);
@@ -61,6 +62,12 @@ class Table extends React.Component {
   }
 }
 
+/**
+ * Renders Order status column cell.
+ * @param color: color of bullet before status descriptor
+ * @param status: status text descriptor
+ * @return JSX component
+ */
 const StatusSpan = (props) => {
   return(
     <span>
@@ -70,19 +77,40 @@ const StatusSpan = (props) => {
   );
 };
 
+/**
+ * Fetch data from API service. Each parameter will be given to
+ * server side.
+ * @param pageSize: page's size
+ * @param pageNum: page number
+ * @param sorted: sorting descriptor
+ * @return Promise
+ */
 const processData = (pageSize, pageNum, sorted) => {
-  return new Promise((resolve, reject) => {
-    let filteredData = rawData;
-    const sortedData = sortData(filteredData, sorted);
-    const res = {
-      rows: sortedData.slice(pageSize * pageNum, pageSize * pageNum + pageSize),
-      pages: Math.ceil(filteredData.length / pageSize)
-    };
 
-    setTimeout(() => resolve(res), 500);
-  });
+  const sortOrders = transformStatusColumnSort(sorted);
+  const url = sortOrders.reduce((accUrl, sort) => {
+    accUrl.searchParams.append('sort', `${sort.id},${sort.desc ? 'desc' : 'asc'}`);
+    return accUrl;
+  }, new URL('/api/orders', window.origin));
+  url.searchParams.append('page', pageNum);
+  url.searchParams.append('size', pageSize);
+
+  return fetch(url)
+    .then(resp => resp.ok ? resp.json() : Promise.reject(resp.status))
+    .then(data => {
+      return {
+        rows: data['_embedded']['orders'],
+        pages: data['page']['totalPages']
+      };
+    }).catch(error => console.error('Failed: ', error));
 };
 
+/**
+ * Transform 'acceptedAt' and 'completedAt' cells to the
+ * JSX component.
+ * @param row: table row
+ * @return JSX component
+ */
 const transformColumns = row => {
   if (row.value) {
     if (row.value['acceptedAt']) {
@@ -95,6 +123,26 @@ const transformColumns = row => {
   } else {
     return(<span></span>);
   }
+};
+
+/**
+ * Transform sorting descriptor. Change 'orderStatus' item to
+ * 'acceptedAt' and 'completedAt' items with same sort order.
+ * @param sorted: sorting descriptor
+ * @return sorting descriptor
+ */
+const transformStatusColumnSort = sorted => {
+  const columnIndex = sorted.findIndex(sort => sort.id === 'orderStatus');
+  if (columnIndex >= 0) {
+    const copiedSorted = Object.assign([], sorted);
+    const sort = copiedSorted[columnIndex];
+    copiedSorted.splice(columnIndex, 1, { id: 'acceptedAt', desc: sort.desc });
+    copiedSorted.splice(columnIndex, 0, { id: 'completedAt', desc: sort.desc});
+
+    return copiedSorted;
+  }
+
+  return sorted;
 };
 
 
