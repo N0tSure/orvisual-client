@@ -19,7 +19,7 @@ const Order = () => {
   };
 };
 
-const transformStatusColumnSort = sorted => {
+export const transformStatusColumnSort = sorted => {
   const columnIndex = sorted.findIndex(sort => sort.id === 'orderStatus');
   if (columnIndex >= 0) {
     const copiedSorted = Object.assign([], sorted);
