@@ -1,8 +1,10 @@
 import React from 'react';
 import ReactTable from "react-table";
-import "react-table/react-table.css";
 import { Grid, Row } from 'react-bootstrap';
+import OrderRow from './fragments/OrderRow';
+import "react-table/react-table.css";
 import './Table.css';
+
 
 
 /**
@@ -48,6 +50,7 @@ class Table extends React.Component {
               accessor: d => { return { acceptedAt: d.acceptedAt, completedAt: d.completedAt }; },
               Cell: row => transformColumns(row)
             }]}
+            SubComponent={(row) => <OrderRow rowInfo={row} />}
             manual
             data={data}
             pages={pages}
