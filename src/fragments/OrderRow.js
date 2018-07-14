@@ -6,36 +6,41 @@ export default class OrderRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      order: props.rowInfo.original,
       pictures: []
     };
   }
 
   componentDidMount() {
-    fetchPictures(this.props.rowInfo.original)
+    fetchPictures(this.state.order)
       .then(pictures => this.setState({ pictures: pictures }));
   }
 
   render() {
-    const order = this.props.rowInfo.original;
+    const {
+      clientName, clientPhone, clientEmail,
+      description, acceptedAt, completedAt
+    } = this.state.order;
+
     return(
       <Grid>
         <Row>
           <Col sm={6}>
             <strong>Client name</strong>
-            <p>{order.clientName}</p>
+            <p>{clientName}</p>
           </Col>
           <Col sm={6}>
-            <AcceptedComponent acceptedAt={order.acceptedAt} completedAt={order.completedAt} />
+            <AcceptedComponent acceptedAt={acceptedAt} completedAt={completedAt} />
           </Col>
         </Row>
         <Row>
           <Col sm={6}>
             <strong>Client phone</strong>
-            <p>{order.clientPhone}</p>
+            <p>{clientPhone}</p>
           </Col>
           <Col sm={6}>
             {
-              order.completedAt ? (<TemporalDescriptor prefix='Completed' ts={order.completedAt} />)
+              completedAt ? (<TemporalDescriptor prefix='Completed' ts={completedAt} />)
                 : (<AttributeButton text='Complete' />)
             }
           </Col>
@@ -43,16 +48,16 @@ export default class OrderRow extends React.Component {
         <Row>
           <Col sm={6}>
             <strong>Client email</strong>
-            <p>{order.clientEmail}</p>
+            <p>{clientEmail}</p>
           </Col>
           <Col sm={6}>
-            <StatusDescriptor status={order} />
+            <StatusDescriptor acceptedAt={acceptedAt} completedAt={completedAt} />
           </Col>
         </Row>
         <Row>
           <Col sm={12}>
             <h4>Order description</h4>
-            <p>{order.description}</p>
+            <p>{description}</p>
           </Col>
         </Row>
         <Row>
@@ -89,7 +94,7 @@ const PictureCarousel = (props) => {
           props.pictures.map(
             picture => {
               return(
-                <Carousel.Item>
+                <Carousel.Item key={picture['_links'].self.href}>
                   <Image
                     className="center-block"
                     src={picture['_links'].imageFile.href}
@@ -112,11 +117,11 @@ const TemporalDescriptor = (props) => {
 };
 
 const StatusDescriptor = (props) => {
-  if (props.status.acceptedAt) {
-    return props.status.completedAt ? (<strong className="text-muted">Completed</strong>)
+  if (props.acceptedAt) {
+    return props.completedAt ? (<strong className="text-muted">Completed</strong>)
       : (<strong className="text-success">In progress</strong>);
   } else {
-    return props.status.completedAt ? (<strong className="text-warning">Closed</strong>)
+    return props.completedAt ? (<strong className="text-warning">Closed</strong>)
       : (<strong className="text-primary">New</strong>);
   }
 };
