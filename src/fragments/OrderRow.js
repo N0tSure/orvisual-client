@@ -2,6 +2,12 @@ import React from 'react';
 import { Grid, Row, Col, Carousel, Image, Button } from 'react-bootstrap';
 import moment from 'moment';
 
+/**
+ * This component provides such features like update order
+ * attributes, view order details and related pictures.
+ * Component is Table's sub component and works with particular
+ * row.
+ */
 export default class OrderRow extends React.Component {
   constructor(props) {
     super(props);
@@ -11,6 +17,11 @@ export default class OrderRow extends React.Component {
     };
   }
 
+  /**
+   * Assign timestamp string to particular Order and update data on
+   * server side.
+   * @param attr: attribute's name
+   */
   assignTemporalAttribute = (attr) => {
     console.log('assignTemporalAttribute:', attr);
     updateOrderAttribute(this.state.order, attr, moment().toISOString())
@@ -78,6 +89,20 @@ export default class OrderRow extends React.Component {
   }
 }
 
+/**
+ * This component creates an element related to accept
+ * attribute of Order. If Order already accepted will returns
+ * TemporalDescriptor of an attribute. In other cases, if
+ * attribute's value not assigned, in case if Order not
+ * completed yet, AttributeButton will return which can assign
+ * value to attribute. If order completed, it's immutable
+ * record and will return static message.
+ *
+ * @param props.acceptedAt: Order acception timestamp
+ * @param props.completedAt: Order completion timestamp
+ * @param props.updateHandler: function for handling model update
+ * @return JSX component
+ */
 const AcceptedComponent = (props) => {
   if (props.acceptedAt) {
     return(<TemporalDescriptor prefix='Accepted' ts={props.acceptedAt} />);
@@ -88,12 +113,26 @@ const AcceptedComponent = (props) => {
   }
 };
 
+/**
+ * Render button which can update Order model on server.
+ *
+ * @param props.updateHandler: function for handling model update
+ * @param props.test: button text
+ * @return JSX component
+ */
 const AttributeButton = (props) => {
   return(
     <Button onClick={props.updateHandler}>{props.text}</Button>
   );
 };
 
+/**
+ * Render carousel with pictures if just one present, in
+ * another case return static span.
+ *
+ * @param props.pictures: list of pictures
+ * @return JSX component
+ */
 const PictureCarousel = (props) => {
   if (props.pictures.length) {
     return(
@@ -118,12 +157,26 @@ const PictureCarousel = (props) => {
   }
 };
 
+/**
+ * Render span which show date and time.
+ *
+ * @param props.prefix: text prefix
+ * @param props.ts: moment.js object
+ * @return JSX component
+ */
 const TemporalDescriptor = (props) => {
   return (
     <span>{`${props.prefix} on ${moment(props.ts).format('LLL')}`}</span>
   );
 };
 
+/**
+ * Using Order's attributes renders it's status.
+ *
+ * @param props.acceptedAt: Order acception timestamp
+ * @param props.completedAt: Order completion timestamp
+ * @return JSX component
+ */
 const StatusDescriptor = (props) => {
   if (props.acceptedAt) {
     return props.completedAt ? (<strong className="text-muted">Completed</strong>)
@@ -134,6 +187,12 @@ const StatusDescriptor = (props) => {
   }
 };
 
+/**
+ * Fetches picture from server, using order's self link.
+ *
+ * @param order: Order model
+ * @return Promise, which will returns list of pictures
+ */
 const fetchPictures = (order) => {
   return fetch(order['_links'].pictures.href)
     .then(resp => resp.ok ? resp.json() : Promise.reject(resp.status))
@@ -141,6 +200,14 @@ const fetchPictures = (order) => {
     .catch(err => { console.error('Fetching pictures failed with ', err); return []; });
 };
 
+/**
+ * Update one attribute of given Order.
+ *
+ * @param order: Order model
+ * @param attributeName: attribute's name
+ * @param attributeValue: attribute's value
+ * @return Promise, which will returns updated Order
+ */
 const updateOrderAttribute = (order, attributeName, attributeValue) => {
 
   const patch = {};
