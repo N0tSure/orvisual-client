@@ -11,6 +11,12 @@ export default class OrderRow extends React.Component {
     };
   }
 
+  assignTemporalAttribute = (attr) => {
+    console.log('assignTemporalAttribute:', attr);
+    updateOrderAttribute(this.state.order, attr, moment().toISOString())
+      .then(order => this.setState({ order: order }));
+  };
+
   componentDidMount() {
     fetchPictures(this.state.order)
       .then(pictures => this.setState({ pictures: pictures }));
@@ -30,7 +36,8 @@ export default class OrderRow extends React.Component {
             <p>{clientName}</p>
           </Col>
           <Col sm={6}>
-            <AcceptedComponent acceptedAt={acceptedAt} completedAt={completedAt} />
+            <AcceptedComponent acceptedAt={acceptedAt} completedAt={completedAt}
+              updateHandler={() => this.assignTemporalAttribute('acceptedAt')} />
           </Col>
         </Row>
         <Row>
@@ -41,7 +48,8 @@ export default class OrderRow extends React.Component {
           <Col sm={6}>
             {
               completedAt ? (<TemporalDescriptor prefix='Completed' ts={completedAt} />)
-                : (<AttributeButton text='Complete' />)
+                : (<AttributeButton text='Complete'
+                  updateHandler={() => this.assignTemporalAttribute('completedAt')} />)
             }
           </Col>
         </Row>
@@ -74,7 +82,7 @@ const AcceptedComponent = (props) => {
   if (props.acceptedAt) {
     return(<TemporalDescriptor prefix='Accepted' ts={props.acceptedAt} />);
   } else if (!props.completedAt) {
-    return(<AttributeButton text='Accept' />);
+    return(<AttributeButton text='Accept' updateHandler={props.updateHandler} />);
   } else {
     return(<span className="text-muted">Not accepted</span>);
   }
@@ -82,7 +90,7 @@ const AcceptedComponent = (props) => {
 
 const AttributeButton = (props) => {
   return(
-    <Button>{props.text}</Button>
+    <Button onClick={props.updateHandler}>{props.text}</Button>
   );
 };
 
@@ -131,4 +139,20 @@ const fetchPictures = (order) => {
     .then(resp => resp.ok ? resp.json() : Promise.reject(resp.status))
     .then(page => page['_embedded'].pictures)
     .catch(err => { console.error('Fetching pictures failed with ', err); return []; });
+};
+
+const updateOrderAttribute = (order, attributeName, attributeValue) => {
+
+  const patch = {};
+  patch[attributeName] = attributeValue;
+
+  return fetch(order['_links'].self.href, {
+    method: 'PATCH',
+    body: JSON.stringify(patch),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then(resp => resp.ok ? resp.json() : Promise.reject(resp.status))
+  .catch(err => { console.error('Order update failed: ', err); return order; });
+
 };
