@@ -6,9 +6,13 @@ export default class OrderRow extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      fetched: false,
       pictures: []
     };
+  }
+
+  componentDidMount() {
+    fetchPictures(this.props.rowInfo.original)
+      .then(pictures => this.setState({ pictures: pictures }));
   }
 
   render() {
@@ -53,7 +57,7 @@ export default class OrderRow extends React.Component {
         </Row>
         <Row>
           <Col sm={12}>
-            <PictureCarousel pictures={[]} />
+            <PictureCarousel pictures={this.state.pictures} />
           </Col>
         </Row>
       </Grid>
@@ -122,4 +126,4 @@ const fetchPictures = (order) => {
     .then(resp => resp.ok ? resp.json() : Promise.reject(resp.status))
     .then(page => page['_embedded'].pictures)
     .catch(err => { console.error('Fetching pictures failed with ', err); return []; });
-}
+};
