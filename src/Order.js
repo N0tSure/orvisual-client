@@ -178,7 +178,7 @@ class Order extends React.Component {
           </Navbar.Header>
         </Navbar>
         <Row>
-          <Modal show={this.checkUplodingState()}>
+          <Modal className="uploading-status-modal" show={this.checkUplodingState()}>
             <Modal.Header>
               <Modal.Title>Publishing order details</Modal.Title>
             </Modal.Header>
