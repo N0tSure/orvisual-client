@@ -1,32 +1,32 @@
-# OrVisual Web client
+# OrVisual Client
 
-**OrVisual** is *frontend* application, which provide ordering data
-visualization.
+The application is a client for **OrVisual** service. This client provides information page and
+order form.
 
-Application provides data exchange between service consumer and service
-provider.
+## Order creation
 
-Quite often happens so, that consumer of some service create order, and
-additional order details must be provided. Order details may use by client, for
-resolving cost of service, or for service provider to determine the scope of
- work and the number of consumables that nay be required for the execution of
- order.
+Order creation provided by `Order` component, which available on `/order` mapping. User can fill
+all Order's attributes and upload additional pictures for order.
 
- It is known that visualization most effective way for communication.
- **OrVisual** provide opportunity to create order using form and include to the
- order data additional graphical information.
+## Administration view
 
- * About company template
-[w3schools.com](https://www.w3schools.com/bootstrap/bootstrap_theme_company.asp)
+An administrator can view all orders and set _order's states_: `new`, `in progress`, `closed` or
+`completed`. Administration view available on mapping `/adm`.
 
- * React docs from official [site](https://reactjs.org/docs/hello-world.html)
+## Deploying
 
- * About bootstrap project [Create React App](https://github.com/facebook/create-react-app)
+The application might deployed as static content, just need to build project from sources:
 
- * Using create-react-app in [fullstack development](https://www.fullstackreact.com/articles/using-create-react-app-with-a-server/)
+`$: npm i && npm run-script build`
 
- * React's [Routers](https://reacttraining.com/react-router/web/guides/philosophy)
+> NOTE: For OrVisual Client can work, OrVisual API root must mapped on `/api`.
 
- * React-Bootstrap [reference](https://react-bootstrap.github.io/)
+**OrVisual Client** can be deployed from docker image. Image `asirosh/orvisual-client` from
+Docker Hub may be used.
 
- * Usage of [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch)
+`$: docker pull asirosh/orvisual-client`
+
+`$: docker run -e SERVICE_URL=orvisual-api:8080 --network service-net asirosh/orvisual-client`
+
+`SERVICE_URL` is a URL of OrVisual API service, service and client must be in same
+[Docker network](https://docs.docker.com/v17.09/engine/userguide/networking/).
