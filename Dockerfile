@@ -2,7 +2,7 @@
 #
 FROM nginx:1.14
 
-MAINTAINER Artemis Sirosh <ASir2089@gmail.com>
+LABEL maintainer="Artemis Sirosh <ASir2089@gmail.com>"
 
 COPY build/ /usr/share/nginx/html/
 
