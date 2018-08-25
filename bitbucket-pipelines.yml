@@ -1,12 +1,31 @@
 image: atlassian/default-image:2
 
 pipelines:
-  default:
-    - step:
-        name: Run tests
-        caches:
-          - node
-        script:
-          - export CI=true
-          - npm install
-          - npm test
+  branches:
+    default:
+      - step:
+          name: Run tests
+          caches:
+            - node
+          script:
+            - export CI=true
+            - npm install
+            - npm test
+
+    iss10:
+      - step:
+          name: Run tests
+          caches:
+            - node
+          script:
+            - export CI=true
+            - npm install
+            - npm test
+      - step:
+          name: Production build
+          caches:
+            - node
+          script:
+            - npm run-script build
+          artifacts:
+            - build/**
