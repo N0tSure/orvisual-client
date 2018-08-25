@@ -38,3 +38,5 @@ pipelines:
             - docker
           script:
             - docker build -t asirosh/orvisual-client:$(node version.js) .
+            - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+            - docker pull asirosh/orvisual-client:$(node version.js)
