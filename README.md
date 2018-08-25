@@ -21,12 +21,13 @@ The application might deployed as static content, just need to build project fro
 
 > NOTE: For OrVisual Client can work, OrVisual API root must mapped on `/api`.
 
-**OrVisual Client** can be deployed from docker image. Image `asirosh/orvisual-client` from
-Docker Hub may be used.
+**OrVisual Client** can be deployed from docker image. Image
+[asirosh/orvisual-client](https://hub.docker.com/r/asirosh/orvisual-client/) from Docker Hub may be
+used.
 
 `$: docker pull asirosh/orvisual-client`
 
-`$: docker run -e SERVICE_URL=orvisual-api:8080 --network service-net asirosh/orvisual-client`
+`$: docker run -e SERVICE_URL=orvisual-api:8080 --network my-net asirosh/orvisual-client`
 
 `SERVICE_URL` is a URL of OrVisual API service, service and client must be in same
 [Docker network](https://docs.docker.com/v17.09/engine/userguide/networking/).
