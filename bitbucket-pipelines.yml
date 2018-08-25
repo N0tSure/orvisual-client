@@ -30,3 +30,11 @@ pipelines:
             - npm run-script build
           artifacts:
             - build/**
+      - step:
+          name: Build Docker image
+          caches:
+            - docker
+          services:
+            - docker
+          script:
+            - docker build -t asirosh/orvisual-client:$(node version.js) .
