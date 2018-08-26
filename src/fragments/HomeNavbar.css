@@ -1,6 +1,6 @@
 .navbar {
   margin-bottom: 0;
-  background-color: #f4511e;
+  background-color: #8533ff;
   /* makes navbar render on top of other elements */
   z-index: 9999;
   border: 0;
@@ -19,7 +19,7 @@
 
 /* makes navbar items white on mouse on, and text orange */
 .navbar-nav li a:hover, .navbar-nav li.active a {
-  color: #f4511e !important;
+  color: #8533ff !important;
   background-color: #fff !important;
 }
 

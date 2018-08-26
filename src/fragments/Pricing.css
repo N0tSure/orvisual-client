@@ -1,6 +1,6 @@
 .panel {
   /*  makes border orange and 1 pixel width */
-  border: 1px solid #f4511e;
+  border: 1px solid #8533ff;
   /* makes border's edge sharp */
   border-radius: 0;
   /* smooth shadow appear */
@@ -17,12 +17,12 @@
 
 .panel-footer .btn:hover {
   /*  makes border orange and 1 pixel width */
-  border: 1px solid #f4511e;
+  border: 1px solid #8533ff;
   /* !important specify given option for node,
      despite of high order classes properties
   */
   background-color: #fff !important;
-  color: #f4511e;
+  color: #8533ff;
 }
 
 .panel-heading {
@@ -31,7 +31,7 @@
      body's text color is black */
   color: #fff !important;
   /* specify f4511e color for panel-heading background */
-  background-color: #f4511e !important;
+  background-color: #8533ff !important;
   /* generates space around an panel-heading's content */
   padding: 25px;
   border-bottom: 1px solid transparent;
@@ -66,6 +66,6 @@
   /* set top and bottom marging as 15 pixels, and
      left and right as 0 pixels */
   margin: 15px 0;
-  background-color: #f4511e;
+  background-color: #8533ff;
   color: #fff;
 }

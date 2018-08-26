@@ -10,3 +10,33 @@ pipelines:
           - export CI=true
           - npm install
           - npm test
+
+  branches:
+    master:
+      - step:
+          name: Run tests
+          caches:
+            - node
+          script:
+            - export CI=true
+            - npm install
+            - npm test
+      - step:
+          name: Production build
+          caches:
+            - node
+          script:
+            - npm install
+            - npm run-script build
+          artifacts:
+            - build/**
+      - step:
+          name: Build Docker image
+          caches:
+            - docker
+          services:
+            - docker
+          script:
+            - docker build -t asirosh/orvisual-client:$(node version.js) .
+            - docker login -u $DOCKER_HUB_USERNAME -p $DOCKER_HUB_PASSWORD
+            - docker push asirosh/orvisual-client:$(node version.js)

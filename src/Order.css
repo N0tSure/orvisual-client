@@ -2,3 +2,7 @@
 .upload-filed-list .list-group-item {
   border: 0px;
 }
+
+.uploading-status-modal {
+  padding-top: 100px;
+}
