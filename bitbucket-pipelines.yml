@@ -10,7 +10,7 @@ pipelines:
           - export CI=true
           - npm install
           - npm test
-          
+
   branches:
     master:
       - step:
