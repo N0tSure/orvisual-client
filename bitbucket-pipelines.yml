@@ -12,7 +12,7 @@ pipelines:
             - npm install
             - npm test
 
-    iss10:
+    master:
       - step:
           name: Run tests
           caches:
