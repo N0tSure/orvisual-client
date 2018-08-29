@@ -4,6 +4,8 @@ FROM nginx:1.14
 
 LABEL maintainer="Artemis Sirosh <ASir2089@gmail.com>"
 
+ENV DLR=$
+
 COPY build/ /usr/share/nginx/html/
 
 COPY nginx.template.conf /etc/nginx/
