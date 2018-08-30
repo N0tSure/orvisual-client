@@ -27,7 +27,7 @@ used.
 
 `$: docker pull asirosh/orvisual-client`
 
-`$: docker run -e SERVICE_URL=orvisual-api:8080 --network my-net asirosh/orvisual-client`
+`$: docker run -e SERVICE_URL=http://orvisual-api:8080 --network my-net asirosh/orvisual-client`
 
 `SERVICE_URL` is a URL of OrVisual API service, service and client must be in same
 [Docker network](https://docs.docker.com/v17.09/engine/userguide/networking/).

@@ -6,6 +6,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+## [0.2.0] - 2018-08-30
+### Changed
+ - fixed issue with React-Route link processing by nginx
+
 ## [0.1.0] - 2018-08-26
 ### Added
  - home page
